@@ -9,7 +9,12 @@ interface Post {
     handle: string;
     displayName?: string;
   };
-  record: AppBskyFeedPost.Record;
+  record: {
+    text: string;
+    langs?: string[];
+    $type: string;
+    createdAt: string;
+  };
   likeCount?: number;
   repostCount?: number;
   replyCount?: number;
