@@ -17,9 +17,19 @@ interface Language {
   name: string;
 }
 
+interface SortOption {
+  id: string;
+  name: string;
+}
+
 const LANGUAGES: Language[] = [
   { id: "fr", name: "Français" },
   { id: "en", name: "Anglais" },
+];
+
+const SORT_OPTIONS: SortOption[] = [
+  { id: "recent", name: "Plus récents" },
+  { id: "popular", name: "Plus populaires" },
 ];
 
 export default function Home() {
@@ -31,6 +41,7 @@ export default function Home() {
   const [posts, setPosts] = useState<Post[]>([]);
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
+  const [sortBy, setSortBy] = useState<string>("recent");
 
   const handleLogin = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -64,10 +75,20 @@ export default function Home() {
         limit: 30
       });
       
-      const filteredPosts = response.data.posts.filter((post: AppBskyFeedDefs.PostView) => {
+      let filteredPosts = response.data.posts.filter((post: AppBskyFeedDefs.PostView) => {
         const postLang = (post.record as { langs?: string[] }).langs?.[0] || "unknown";
         return selectedLanguages.includes(postLang);
       });
+
+      if (sortBy === "popular") {
+        filteredPosts.sort((a, b) => ((b as Post).likeCount || 0) - ((a as Post).likeCount || 0));
+      } else {
+        filteredPosts.sort((a, b) => {
+          const bDate = new Date((b as Post).record.createdAt).getTime();
+          const aDate = new Date((a as Post).record.createdAt).getTime();
+          return bDate - aDate;
+        });
+      }
       
       setPosts(filteredPosts as Post[]);
     } catch (error) {
@@ -205,6 +226,24 @@ export default function Home() {
                           className="w-4 h-4 text-blue-600"
                         />
                         <span>{lang.name}</span>
+                      </label>
+                    ))}
+                  </div>
+                </div>
+                <div>
+                  <label className="block mb-2 font-medium">Trier par :</label>
+                  <div className="flex gap-3">
+                    {SORT_OPTIONS.map(option => (
+                      <label key={option.id} className="flex items-center space-x-2">
+                        <input
+                          type="radio"
+                          name="sortBy"
+                          value={option.id}
+                          checked={sortBy === option.id}
+                          onChange={(e) => setSortBy(e.target.value)}
+                          className="w-4 h-4 text-blue-600"
+                        />
+                        <span>{option.name}</span>
                       </label>
                     ))}
                   </div>
