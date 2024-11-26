@@ -1,23 +1,15 @@
 "use client";
 
 import { useState } from "react";
-import { BskyAgent } from "@atproto/api";
+import { BskyAgent, AppBskyFeedDefs } from "@atproto/api";
 
-interface Post {
-  uri: string;
-  author: {
-    handle: string;
-    displayName?: string;
-  };
+interface Post extends AppBskyFeedDefs.PostView {
   record: {
     text: string;
     langs?: string[];
     $type: string;
     createdAt: string;
   };
-  likeCount?: number;
-  repostCount?: number;
-  replyCount?: number;
 }
 
 interface Language {
@@ -72,12 +64,12 @@ export default function Home() {
         limit: 30
       });
       
-      const filteredPosts = response.data.posts.filter(post => {
-        const postLang = post.record.langs?.[0] || "unknown";
+      const filteredPosts = response.data.posts.filter((post: AppBskyFeedDefs.PostView) => {
+        const postLang = (post.record as any).langs?.[0] || "unknown";
         return selectedLanguages.includes(postLang);
       });
       
-      setPosts(filteredPosts as unknown as Post[]);
+      setPosts(filteredPosts as Post[]);
     } catch (error) {
       setError("Erreur lors de la recherche.");
       console.error("Erreur de recherche:", error);
