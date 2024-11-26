@@ -165,7 +165,7 @@ export default function Home() {
               <button
                 type="submit"
                 disabled={loading}
-                className="w-full bg-blue-500 text-white p-2 rounded hover:bg-blue-600"
+                className="w-full bg-black text-white p-2 rounded hover:bg-blue-600"
               >
                 {loading ? "Connexion..." : "Se connecter"}
               </button>
@@ -187,7 +187,7 @@ export default function Home() {
                   <button
                     type="submit"
                     disabled={loading}
-                    className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600"
+                    className="bg-black text-white px-4 py-2 rounded hover:bg-green-500"
                   >
                     {loading ? "Recherche..." : "Rechercher"}
                   </button>
