@@ -3,7 +3,8 @@ const config = {
   reactStrictMode: true,
   swcMinify: true,
   images: {
-    unoptimized: true
+    domains: ['localhost'],
+    unoptimized: process.env.NODE_ENV === 'production'
   },
   transpilePackages: []
 }
