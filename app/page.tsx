@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { BskyAgent, AppBskyFeedPost } from "@atproto/api";
+import { BskyAgent } from "@atproto/api";
 
 interface Post {
   uri: string;
@@ -49,8 +49,9 @@ export default function Home() {
       const agent = new BskyAgent({ service: "https://bsky.social" });
       await agent.login({ identifier, password });
       setIsLoggedIn(true);
-    } catch (err) {
+    } catch (error) {
       setError("Erreur de connexion. Vérifiez vos identifiants.");
+      console.error("Erreur de connexion:", error);
     } finally {
       setLoading(false);
     }
@@ -71,15 +72,15 @@ export default function Home() {
         limit: 30
       });
       
-      // Filtrer les posts par langue
       const filteredPosts = response.data.posts.filter(post => {
         const postLang = post.record.langs?.[0] || "unknown";
         return selectedLanguages.includes(postLang);
       });
       
       setPosts(filteredPosts as unknown as Post[]);
-    } catch (err) {
+    } catch (error) {
       setError("Erreur lors de la recherche.");
+      console.error("Erreur de recherche:", error);
     } finally {
       setLoading(false);
     }
