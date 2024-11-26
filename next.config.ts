@@ -7,7 +7,7 @@ const config = {
     unoptimized: process.env.NODE_ENV === 'production'
   },
   transpilePackages: [],
-  webpack: (config) => {
+  webpack: (config: any) => {
     if (config.resolve) {
       config.resolve.fallback = { fs: false, path: false };
     }
