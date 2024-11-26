@@ -1,6 +1,4 @@
 /** @type {import('next').NextConfig} */
-import type { Configuration } from 'webpack';
-
 const config = {
   reactStrictMode: true,
   swcMinify: true,
@@ -9,8 +7,10 @@ const config = {
     unoptimized: process.env.NODE_ENV === 'production'
   },
   transpilePackages: [],
-  webpack: (config: Configuration) => {
-    config.resolve.fallback = { fs: false, path: false };
+  webpack: (config) => {
+    if (config.resolve) {
+      config.resolve.fallback = { fs: false, path: false };
+    }
     return config;
   }
 }
