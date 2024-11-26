@@ -1,20 +1,11 @@
-import type { NextConfig } from 'next'
-
-const config: NextConfig = {
-  output: 'standalone',
+/** @type {import('next').NextConfig} */
+const config = {
   reactStrictMode: true,
   swcMinify: true,
-  poweredByHeader: false,
-  compiler: {
-    removeConsole: process.env.NODE_ENV === "production"
+  images: {
+    unoptimized: true
   },
-  webpack: (config) => {
-    config.module.rules.push({
-      test: /\.css$/,
-      use: ['style-loader', 'css-loader', 'postcss-loader'],
-    });
-    return config;
-  }
+  transpilePackages: []
 }
 
 export default config
