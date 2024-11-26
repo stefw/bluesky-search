@@ -65,7 +65,7 @@ export default function Home() {
       });
       
       const filteredPosts = response.data.posts.filter((post: AppBskyFeedDefs.PostView) => {
-        const postLang = (post.record as any).langs?.[0] || "unknown";
+        const postLang = (post.record as { langs?: string[] }).langs?.[0] || "unknown";
         return selectedLanguages.includes(postLang);
       });
       
