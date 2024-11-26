@@ -6,7 +6,11 @@ const config = {
     domains: ['localhost'],
     unoptimized: process.env.NODE_ENV === 'production'
   },
-  transpilePackages: []
+  transpilePackages: [],
+  webpack: (config) => {
+    config.resolve.fallback = { fs: false, path: false };
+    return config;
+  }
 }
 
 export default config
